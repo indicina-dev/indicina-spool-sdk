@@ -54,13 +54,3 @@ const PopupSDK: IPopupSDK = (() => {
 })();
 
 module.exports = PopupSDK
-
-// Usage example
-PopupSDK.openPopup(
-    'https://www.example.com/widget',
-    'spool@gmail.com',
-);
-// Close the popup after 5 seconds
-setTimeout(() => {
-    PopupSDK.closePopup();
-}, 5000);
