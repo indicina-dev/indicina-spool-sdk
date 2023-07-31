@@ -1,19 +1,34 @@
 interface IPopupSDK {
     openPopup: (widgetUrl: string, customerIdentifier: string) => void;
     closePopup: () => void;
+    onComplete: (callback: (result: string) => void) => void;
 }
 
 const PopupSDK: IPopupSDK = (() => {
     let overlayElement: HTMLDivElement | null = null;
     let iframeElement: HTMLIFrameElement | null = null;
+    let onCompleteCallback: ((result: string) => void) | null = null;
 
     function handlePopupMessage(event: MessageEvent): void {
         if (event.data === 'closePopup') {
             closePopup();
+        } else if (onCompleteCallback) {
+            onCompleteCallback(event.data);
         }
     }
 
     function openPopup(widgetUrl: string, customerIdentifier: string): void {
+        if (typeof widgetUrl !== 'string' || typeof customerIdentifier !== 'string') {
+            throw new Error('widgetUrl and customerIdentifier must be strings.');
+        }
+
+        const url = new URL(widgetUrl);
+        if (url.search) {
+            url.search += `&customer-identifier=${encodeURIComponent(customerIdentifier)}`;
+        } else {
+            url.search = `?customer-identifier=${encodeURIComponent(customerIdentifier)}`;
+        }
+
         overlayElement = document.createElement('div');
         overlayElement.style.position = 'fixed';
         overlayElement.style.top = '0';
@@ -24,7 +39,7 @@ const PopupSDK: IPopupSDK = (() => {
         document.body.appendChild(overlayElement);
 
         iframeElement = document.createElement('iframe');
-        iframeElement.src = `${widgetUrl}?customer-identifier=${customerIdentifier}`;
+        iframeElement.src = url.toString();
         iframeElement.style.position = 'fixed';
         iframeElement.style.top = '50%';
         iframeElement.style.left = '50%';
@@ -47,9 +62,14 @@ const PopupSDK: IPopupSDK = (() => {
         window.removeEventListener('message', handlePopupMessage);
     }
 
+    function onComplete(callback: (result: string) => void): void {
+        onCompleteCallback = callback;
+    }
+
     return {
         openPopup,
         closePopup,
+        onComplete,
     };
 })();
 
