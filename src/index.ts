@@ -1,3 +1,5 @@
+export {};
+
 interface IPopupSDK {
     openPopup: (widgetUrl: string, customerIdentifier: string) => void;
     closePopup: () => void;
