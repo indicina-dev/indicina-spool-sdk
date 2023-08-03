@@ -5,7 +5,7 @@
 ## Installation
 
 ``````bash
-npm i indicina-spool-sdk
+npm i @indicina-dev/indicina-spool-sdk
 ``````
 
 ## Usage Example
