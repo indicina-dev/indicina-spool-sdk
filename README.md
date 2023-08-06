@@ -13,14 +13,14 @@ npm i @indicina-dev/indicina-spool-sdk
 ``````bash
 
 # Function to open the popup
-PopupSDK.openPopup(
+IndicinaSpool.openPopup(
     'https://www.example.com/widget',
     'spool@gmail.com',
 );
   
 # Function to close the popup
 setTimeout(() => {
-    PopupSDK.closePopup();
+    IndicinaSpool.closePopup();
 }, 5000);
 
 # Function to handle the completion result
@@ -29,6 +29,6 @@ function handleCompletion(result) {
   ## Your code to handle the result, e.g., update UI, make API calls, etc.
 }
 
-# Set the onComplete callback using the PopupSDK.onComplete method
-PopupSDK.onComplete(handleCompletion);
+# Set the onComplete callback using the IndicinaSpool.onComplete method
+IndicinaSpool.onComplete(handleCompletion);
 ``````

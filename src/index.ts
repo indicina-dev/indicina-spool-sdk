@@ -1,12 +1,12 @@
 export {};
 
-interface IPopupSDK {
-    openPopup: (widgetUrl: string, customerIdentifier: string) => void;
+interface IIndicinaSpool {
+    openPopup: (widgetUrl: string, customerIdentifier?: string) => void;
     closePopup: () => void;
     onComplete: (callback: (result: string) => void) => void;
 }
 
-const PopupSDK: IPopupSDK = (() => {
+const IndicinaSpool: IIndicinaSpool = (() => {
     let overlayElement: HTMLDivElement | null = null;
     let iframeElement: HTMLIFrameElement | null = null;
     let onCompleteCallback: ((result: string) => void) | null = null;
@@ -19,16 +19,14 @@ const PopupSDK: IPopupSDK = (() => {
         }
     }
 
-    function openPopup(widgetUrl: string, customerIdentifier: string): void {
-        if (typeof widgetUrl !== 'string' || typeof customerIdentifier !== 'string') {
-            throw new Error('widgetUrl and customerIdentifier must be strings.');
+    function openPopup(widgetUrl: string, customerIdentifier?: string): void {
+        if (typeof widgetUrl !== 'string') {
+            throw new Error('widgetUrl must be a string.');
         }
 
         const url = new URL(widgetUrl);
-        if (url.search) {
+        if (customerIdentifier) {
             url.search += `&customer-identifier=${encodeURIComponent(customerIdentifier)}`;
-        } else {
-            url.search = `?customer-identifier=${encodeURIComponent(customerIdentifier)}`;
         }
 
         overlayElement = document.createElement('div');
@@ -75,4 +73,4 @@ const PopupSDK: IPopupSDK = (() => {
     };
 })();
 
-module.exports = PopupSDK
+module.exports = IndicinaSpool
