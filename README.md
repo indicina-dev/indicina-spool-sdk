@@ -16,6 +16,7 @@ npm i @indicina-dev/indicina-spool-sdk
 IndicinaSpool.openPopup(
     'https://www.example.com/widget',
     'spool@gmail.com',
+    'INDXXXX-XXXX-XXXX-XXXX'
 );
   
 # Function to close the popup
