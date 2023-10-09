@@ -1,7 +1,7 @@
 export {};
 
 interface IIndicinaSpool {
-    openPopup: (widgetUrl: string, customerIdentifier?: string) => void;
+    openPopup: (widgetUrl: string, customerIdentifier?: string, reference?: string) => void;
     closePopup: () => void;
     onComplete: (callback: (result: string) => void) => void;
 }
@@ -19,14 +19,27 @@ const IndicinaSpool: IIndicinaSpool = (() => {
         }
     }
 
-    function openPopup(widgetUrl: string, customerIdentifier?: string): void {
+    function openPopup(widgetUrl: string, customerIdentifier?: string, reference?: string): void {
         if (typeof widgetUrl !== 'string') {
             throw new Error('widgetUrl must be a string.');
         }
 
         const url = new URL(widgetUrl);
-        if (customerIdentifier) {
-            url.search += `&customer-identifier=${encodeURIComponent(customerIdentifier)}`;
+        
+        if (customerIdentifier && typeof customerIdentifier === 'string') {
+            if (url.search) {
+                url.search += `&customer-identifier=${encodeURIComponent(customerIdentifier)}`;
+            } else {
+                url.search = `?customer-identifier=${encodeURIComponent(customerIdentifier)}`;
+            }
+        }
+
+        if (reference && typeof reference === 'string') {
+            if (url.search) {
+                url.search += `&reference=${encodeURIComponent(reference)}`;
+            } else {
+                url.search = `?reference=${encodeURIComponent(reference)}`;
+            }
         }
 
         overlayElement = document.createElement('div');
